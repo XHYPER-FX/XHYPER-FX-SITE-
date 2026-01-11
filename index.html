@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XHYPER FX | Software Engineer</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{--neon:#0ff}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Orbitron}
+body{background:black;color:white;overflow:hidden}
+
+/* VIDEO BG */
+#videoBG{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;opacity:.2;z-index:-3}
+
+/* TERMINAL LOGIN */
+#terminal{
+position:fixed;inset:0;background:black;color:#0f0;
+padding:20px;font-size:14px;z-index:9999;
+}
+#terminal span{display:block}
+
+/* NAV */
+nav{
+position:fixed;top:10px;left:50%;transform:translateX(-50%);
+z-index:5
+}
+nav button{
+background:none;border:1px solid var(--neon);color:var(--neon);
+padding:8px 15px;margin:4px;border-radius:20px;cursor:pointer
+}
+nav button:hover{background:var(--neon);color:black}
+
+/* PAGES */
+.page{
+display:none;height:100vh;align-items:center;justify-content:center
+}
+.page.active{display:flex}
+
+/* CARD */
+.card{
+background:rgba(0,0,0,.65);
+padding:25px;border-radius:25px;text-align:center;
+width:360px;box-shadow:0 0 30px var(--neon);
+backdrop-filter:blur(10px)
+}
+
+/* PROFILE */
+.profile{
+width:140px;height:140px;border-radius:50%;
+border:4px solid var(--neon);object-fit:cover;
+box-shadow:0 0 25px var(--neon)
+}
+
+/* GLITCH */
+.glitch{font-size:26px;position:relative;margin-top:10px}
+.glitch:before,.glitch:after{
+content:attr(data-text);position:absolute;left:0;top:0;width:100%;
+}
+.glitch:before{color:#f0f;animation:g1 2s infinite}
+.glitch:after{color:#0ff;animation:g2 2s infinite}
+@keyframes g1{0%{clip-path:inset(80% 0 0 0)}50%{clip-path:inset(10% 0 70% 0)}}
+@keyframes g2{0%{clip-path:inset(0 0 80% 0)}50%{clip-path:inset(70% 0 10% 0)}}
+
+/* SKILLS */
+.skill{margin:10px 0;text-align:left}
+.bar{
+height:10px;background:#222;border-radius:10px;overflow:hidden
+}
+.fill{
+height:100%;width:0;background:var(--neon);transition:1.5s
+}
+
+/* PROJECTS */
+.projects{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.proj{
+padding:10px;border:1px solid var(--neon);border-radius:15px;
+transition:.3s
+}
+.proj:hover{transform:scale(1.05);box-shadow:0 0 20px var(--neon)}
+
+/* GITHUB */
+.repo{
+border-bottom:1px solid #333;padding:8px 0;font-size:13px
+}
+
+/* BUTTON */
+.btn{
+margin-top:10px;display:inline-block;padding:10px 25px;border-radius:30px;
+background:var(--neon);color:black;text-decoration:none;font-weight:bold
+}
+</style>
+</head>
+
+<body>
+
+<video id="videoBG" autoplay muted loop>
+<source src="bg.mp4" type="video/mp4">
+</video>
+
+<!-- TERMINAL -->
+<div id="terminal"></div>
+
+<nav>
+<button onclick="go('home')">HOME</button>
+<button onclick="go('skills')">SKILLS</button>
+<button onclick="go('projects')">PROJECTS</button>
+<button onclick="go('github')">GITHUB</button>
+<button onclick="go('contact')">CONTACT</button>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="page active">
+<div class="card">
+<img src="pp.jpg" class="profile">
+<div class="glitch" data-text="XHYPER FX">XHYPER FX</div>
+<p style="color:#ccc">SOFTWARE ENGINEER<br>WEB & APP DEVELOPER<br>SRI LANKA</p>
+</div>
+</div>
+
+<!-- SKILLS -->
+<div id="skills" class="page">
+<div class="card">
+<h3>SKILLS</h3>
+
+<div class="skill">HTML
+<div class="bar"><div class="fill" style="--w:90%"></div></div></div>
+
+<div class="skill">CSS
+<div class="bar"><div class="fill" style="--w:85%"></div></div></div>
+
+<div class="skill">JavaScript
+<div class="bar"><div class="fill" style="--w:80%"></div></div></div>
+
+<div class="skill">Python
+<div class="bar"><div class="fill" style="--w:75%"></div></div></div>
+
+<div class="skill">Flutter
+<div class="bar"><div class="fill" style="--w:65%"></div></div></div>
+
+</div>
+</div>
+
+<!-- PROJECTS -->
+<div id="projects" class="page">
+<div class="card">
+<h3>PROJECTS</h3>
+<div class="projects">
+<div class="proj">Portfolio Website</div>
+<div class="proj">Chat App</div>
+<div class="proj">FX Tool</div>
+<div class="proj">Android App</div>
+</div>
+</div>
+</div>
+
+<!-- GITHUB -->
+<div id="github" class="page">
+<div class="card">
+<h3>LIVE GITHUB REPOS</h3>
+<div id="repos">Loading...</div>
+</div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="page">
+<div class="card">
+PHONE: +94 785 274 495<br><br>
+<a class="btn" href="https://wa.me/94785274495" target="_blank">WHATSAPP CHAT</a>
+</div>
+</div>
+
+<script>
+/* AUTO NEON */
+setInterval(()=>{document.documentElement.style.setProperty('--neon',
+`hsl(${Math.random()*360},100%,60%)`)},1500)
+
+/* TERMINAL LOGIN */
+const term=document.getElementById("terminal");
+const lines=[
+"Booting system...",
+"Loading cyber modules...",
+"Connecting to server...",
+"Access granted ✔",
+"Welcome XHYPER FX"
+];
+let t=0;
+function termPrint(){
+if(t<lines.length){
+term.innerHTML+=lines[t++]+"<br>";
+setTimeout(termPrint,600);
+}else{
+setTimeout(()=>term.style.display="none",800);
+}}
+termPrint();
+
+/* NAV */
+function go(id){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+if(id==="skills"){
+document.querySelectorAll('.fill').forEach(f=>f.style.width=f.parentNode.parentNode.querySelector('.fill').style.getPropertyValue('--w'))
+}
+}
+
+/* SKILL BARS FIX */
+document.querySelectorAll('.fill').forEach(f=>{
+f.style.width="0";
+setTimeout(()=>f.style.width=f.style.getPropertyValue('--w'),800);
+});
+
+/* GITHUB LIVE */
+const USERNAME="PUT_YOUR_GITHUB_USERNAME_HERE";  // <<< CHANGE THIS
+fetch(`https://api.github.com/users/${USERNAME}/repos`)
+.then(r=>r.json())
+.then(d=>{
+let html="";
+d.slice(0,6).forEach(r=>{
+html+=`<div class="repo">📦 ${r.name}</div>`;
+});
+document.getElementById("repos").innerHTML=html||"No repos found";
+})
+.catch(()=>document.getElementById("repos").innerText="GitHub load error");
+</script>
+
+</body>
+</html>
