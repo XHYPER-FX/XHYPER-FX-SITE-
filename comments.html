@@ -9,32 +9,35 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
-body{background:#020617;color:#e5e7eb;padding:20px}
+body{background:#020617;color:#e5e7eb;padding:20px;min-height:100vh}
 .card{
-background:rgba(255,255,255,.08);backdrop-filter:blur(16px);
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(16px);
 border-radius:20px;padding:14px;margin:10px 0
 }
 h1{text-align:center;color:#60a5fa;margin-bottom:15px}
+.back{
+display:inline-block;margin-bottom:12px;
+color:#60a5fa;text-decoration:none;font-weight:600
+}
 </style>
 </head>
 
 <body>
 
+<div class="card">
+<a class="back" href="index.html">← Back to Home</a>
 <h1>💬 FX FAM TEAM COMMENTS</h1>
-<div id="list">Loading comments...</div>
 
-<script>
-/* 👉 PUT YOUR RAW JSON LINK HERE */
-const JSON_URL="https://raw.githubusercontent.com/XHYPER-FX/XHYPER-FX-SITE-/refs/heads/main/comments.json";
-
-fetch(JSON_URL).then(r=>r.json()).then(d=>{
-let h="";
-d.forEach(c=>{
-h+=`<div class="card"><b>${c.name}</b><br>${c.msg}</div>`;
-});
-list.innerHTML=h || "No comments";
-}).catch(()=>list.innerText="Failed to load comments");
+<script src="https://utteranc.es/client.js"
+        repo="XHYPER-FX/fx-comments"
+        issue-term="pathname"
+        theme="github-dark"
+        crossorigin="anonymous"
+        async>
 </script>
+
+</div>
 
 </body>
 </html>
