@@ -1,129 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>XHYPER FX | Software Engineer</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{--neon:#0ff}
-*{margin:0;padding:0;box-sizing:border-box;font-family:Orbitron}
-body{background:black;color:white;overflow:hidden}
-
-/* VIDEO BG */
-#videoBG{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;opacity:.2;z-index:-3}
-
-/* TERMINAL LOGIN */
-#terminal{
-position:fixed;inset:0;background:black;color:#0f0;
-padding:20px;font-size:14px;z-index:9999;
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
+body{
+min-height:100vh;
+background:linear-gradient(135deg,#eafff1,#ffffff,#eafff1);
+overflow-x:hidden;
 }
-#terminal span{display:block}
 
-/* NAV */
-nav{
-position:fixed;top:10px;left:50%;transform:translateX(-50%);
-z-index:5
+/* BLUR BLOBS */
+.blob{
+position:fixed;
+width:300px;height:300px;
+background:#4cff9a;
+filter:blur(120px);
+opacity:.5;
+z-index:-1;
 }
-nav button{
-background:none;border:1px solid var(--neon);color:var(--neon);
-padding:8px 15px;margin:4px;border-radius:20px;cursor:pointer
-}
-nav button:hover{background:var(--neon);color:black}
+.b1{top:-80px;left:-80px}
+.b2{bottom:-80px;right:-80px}
 
-/* PAGES */
-.page{
-display:none;height:100vh;align-items:center;justify-content:center
+/* LAYOUT */
+.container{max-width:1100px;margin:auto;padding:20px}
+
+/* HEADER */
+.header{
+display:flex;flex-wrap:wrap;align-items:center;gap:30px;
+background:rgba(255,255,255,.7);
+backdrop-filter:blur(15px);
+border-radius:25px;
+padding:30px;
+box-shadow:0 20px 40px rgba(0,0,0,.08);
 }
-.page.active{display:flex}
+.profile{
+width:140px;height:140px;border-radius:50%;
+object-fit:cover;border:4px solid #4cff9a;
+}
+.title h1{font-size:32px}
+.title span{color:#22b573;font-weight:600}
+.title p{color:#555;margin-top:6px}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
+margin-top:25px;
+}
 
 /* CARD */
 .card{
-background:rgba(0,0,0,.65);
-padding:25px;border-radius:25px;text-align:center;
-width:360px;box-shadow:0 0 30px var(--neon);
-backdrop-filter:blur(10px)
+background:rgba(255,255,255,.75);
+backdrop-filter:blur(12px);
+border-radius:20px;
+padding:20px;
+box-shadow:0 15px 35px rgba(0,0,0,.07);
+transition:.3s;
 }
-
-/* PROFILE */
-.profile{
-width:140px;height:140px;border-radius:50%;
-border:4px solid var(--neon);object-fit:cover;
-box-shadow:0 0 25px var(--neon)
-}
-
-/* GLITCH */
-.glitch{font-size:26px;position:relative;margin-top:10px}
-.glitch:before,.glitch:after{
-content:attr(data-text);position:absolute;left:0;top:0;width:100%;
-}
-.glitch:before{color:#f0f;animation:g1 2s infinite}
-.glitch:after{color:#0ff;animation:g2 2s infinite}
-@keyframes g1{0%{clip-path:inset(80% 0 0 0)}50%{clip-path:inset(10% 0 70% 0)}}
-@keyframes g2{0%{clip-path:inset(0 0 80% 0)}50%{clip-path:inset(70% 0 10% 0)}}
+.card:hover{transform:translateY(-5px)}
 
 /* SKILLS */
-.skill{margin:10px 0;text-align:left}
+.skill{margin:10px 0}
 .bar{
-height:10px;background:#222;border-radius:10px;overflow:hidden
+height:10px;background:#e6fff1;border-radius:20px;overflow:hidden
 }
 .fill{
-height:100%;width:0;background:var(--neon);transition:1.5s
+height:100%;background:linear-gradient(90deg,#22b573,#4cff9a);
+width:0;transition:1.2s
 }
 
 /* PROJECTS */
-.projects{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.proj{
-padding:10px;border:1px solid var(--neon);border-radius:15px;
-transition:.3s
+.project{
+padding:12px;border-radius:15px;
+background:white;
+border:1px solid #e0fff1;
+transition:.3s;
 }
-.proj:hover{transform:scale(1.05);box-shadow:0 0 20px var(--neon)}
-
-/* GITHUB */
-.repo{
-border-bottom:1px solid #333;padding:8px 0;font-size:13px
+.project:hover{
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+transform:scale(1.03);
 }
 
 /* BUTTON */
 .btn{
-margin-top:10px;display:inline-block;padding:10px 25px;border-radius:30px;
-background:var(--neon);color:black;text-decoration:none;font-weight:bold
+display:inline-block;
+margin-top:12px;
+padding:12px 22px;
+border-radius:25px;
+background:#22b573;
+color:white;text-decoration:none;font-weight:600;
+transition:.3s;
+}
+.btn:hover{background:#1a9a61}
+
+/* FOOTER */
+.footer{text-align:center;color:#666;margin:30px 0}
+
+/* MOBILE */
+@media(max-width:600px){
+.header{text-align:center;justify-content:center}
 }
 </style>
 </head>
 
 <body>
 
-<video id="videoBG" autoplay muted loop>
-<source src="bg.mp4" type="video/mp4">
-</video>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
 
-<!-- TERMINAL -->
-<div id="terminal"></div>
+<div class="container">
 
-<nav>
-<button onclick="go('home')">HOME</button>
-<button onclick="go('skills')">SKILLS</button>
-<button onclick="go('projects')">PROJECTS</button>
-<button onclick="go('github')">GITHUB</button>
-<button onclick="go('contact')">CONTACT</button>
-</nav>
-
-<!-- HOME -->
-<div id="home" class="page active">
-<div class="card">
+<!-- HEADER -->
+<div class="header">
 <img src="pp.jpg" class="profile">
-<div class="glitch" data-text="XHYPER FX">XHYPER FX</div>
-<p style="color:#ccc">SOFTWARE ENGINEER<br>WEB & APP DEVELOPER<br>SRI LANKA</p>
+<div class="title">
+<h1>XHYPER FX</h1>
+<span>Software Engineer • Web & App Developer</span>
+<p>Sri Lanka • Age 18+</p>
 </div>
+</div>
+
+<!-- GRID -->
+<div class="grid">
+
+<!-- ABOUT -->
+<div class="card">
+<h3>👨‍💻 About Me</h3>
+<p style="color:#555;margin-top:8px">
+I am a passionate Software Engineer focused on building modern,
+fast and clean web & mobile applications using latest technologies.
+</p>
 </div>
 
 <!-- SKILLS -->
-<div id="skills" class="page">
 <div class="card">
-<h3>SKILLS</h3>
+<h3>🧠 Skills</h3>
 
 <div class="skill">HTML
 <div class="bar"><div class="fill" style="--w:90%"></div></div></div>
@@ -141,88 +159,43 @@ background:var(--neon);color:black;text-decoration:none;font-weight:bold
 <div class="bar"><div class="fill" style="--w:65%"></div></div></div>
 
 </div>
-</div>
 
 <!-- PROJECTS -->
-<div id="projects" class="page">
 <div class="card">
-<h3>PROJECTS</h3>
-<div class="projects">
-<div class="proj">Portfolio Website</div>
-<div class="proj">Chat App</div>
-<div class="proj">FX Tool</div>
-<div class="proj">Android App</div>
-</div>
-</div>
-</div>
+<h3>📂 Projects</h3>
 
-<!-- GITHUB -->
-<div id="github" class="page">
-<div class="card">
-<h3>LIVE GITHUB REPOS</h3>
-<div id="repos">Loading...</div>
-</div>
+<div class="project">✔ Portfolio Website</div>
+<div class="project">✔ Chat Application</div>
+<div class="project">✔ Mobile App UI</div>
+<div class="project">✔ Automation Scripts</div>
+
 </div>
 
 <!-- CONTACT -->
-<div id="contact" class="page">
 <div class="card">
-PHONE: +94 785 274 495<br><br>
-<a class="btn" href="https://wa.me/94785274495" target="_blank">WHATSAPP CHAT</a>
+<h3>📞 Contact</h3>
+<p style="color:#555;margin-top:8px">
+Phone: +94 785 274 495
+</p>
+
+<a class="btn" href="https://wa.me/94785274495" target="_blank">
+WhatsApp Chat
+</a>
 </div>
+
+</div>
+
+<div class="footer">
+© 2026 XHYPER FX — Software Engineer Portfolio
+</div>
+
 </div>
 
 <script>
-/* AUTO NEON */
-setInterval(()=>{document.documentElement.style.setProperty('--neon',
-`hsl(${Math.random()*360},100%,60%)`)},1500)
-
-/* TERMINAL LOGIN */
-const term=document.getElementById("terminal");
-const lines=[
-"Booting system...",
-"Loading cyber modules...",
-"Connecting to server...",
-"Access granted ✔",
-"Welcome XHYPER FX"
-];
-let t=0;
-function termPrint(){
-if(t<lines.length){
-term.innerHTML+=lines[t++]+"<br>";
-setTimeout(termPrint,600);
-}else{
-setTimeout(()=>term.style.display="none",800);
-}}
-termPrint();
-
-/* NAV */
-function go(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-if(id==="skills"){
-document.querySelectorAll('.fill').forEach(f=>f.style.width=f.parentNode.parentNode.querySelector('.fill').style.getPropertyValue('--w'))
-}
-}
-
-/* SKILL BARS FIX */
+// SKILL ANIMATION
 document.querySelectorAll('.fill').forEach(f=>{
-f.style.width="0";
-setTimeout(()=>f.style.width=f.style.getPropertyValue('--w'),800);
+setTimeout(()=>f.style.width=f.style.getPropertyValue('--w'),500);
 });
-
-/* GITHUB LIVE */
-const USERNAME="PUT_YOUR_GITHUB_USERNAME_HERE";  // <<< CHANGE THIS
-fetch(`https://api.github.com/users/${USERNAME}/repos`)
-.then(r=>r.json())
-.then(d=>{
-let html="";
-d.slice(0,6).forEach(r=>{
-html+=`<div class="repo">📦 ${r.name}</div>`;
-});
-document.getElementById("repos").innerHTML=html||"No repos found";
-})
-.catch(()=>document.getElementById("repos").innerText="GitHub load error");
 </script>
 
 </body>
