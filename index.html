@@ -10,13 +10,12 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
 body{
-min-height:100vh;
 background:#f7fbff;
-overflow-x:hidden;
 color:#0a2540;
+overflow-x:hidden;
 }
 
-/* BLUR NEON BACKGROUND */
+/* BLUR NEON */
 .glow{
 position:fixed;width:320px;height:320px;border-radius:50%;
 filter:blur(120px);opacity:.7;z-index:-1
@@ -30,85 +29,54 @@ position:fixed;inset:0;background:#f7fbff;
 display:flex;flex-direction:column;align-items:center;justify-content:center;
 z-index:9999
 }
-#loader h1{color:#2563eb}
-.spin{
-width:50px;height:50px;border:4px solid #dbeafe;
-border-top:4px solid #2563eb;border-radius:50%;
-animation:spin 1s linear infinite;margin-top:15px
+#bar{
+width:220px;height:8px;background:#eaf2ff;border-radius:10px;overflow:hidden
 }
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* NAV */
-nav{
-position:sticky;top:0;background:rgba(255,255,255,.8);
-backdrop-filter:blur(12px);
-display:flex;justify-content:center;gap:10px;
-padding:10px;z-index:5
+#bar span{
+display:block;height:100%;width:0%;
+background:linear-gradient(90deg,#2563eb,#60a5fa);
+animation:load 2s forwards
 }
-nav button{
-border:none;background:#eaf2ff;color:#2563eb;
-padding:8px 14px;border-radius:20px;font-weight:600;cursor:pointer
-}
-nav button:hover{background:#2563eb;color:white}
+@keyframes load{to{width:100%}}
+#loader h2{color:#2563eb;margin-bottom:12px}
 
 /* LAYOUT */
 .container{max-width:1100px;margin:auto;padding:15px}
 
-/* PAGES */
-.page{display:none;animation:fade .4s}
-.page.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(10px)}}
-
-/* HEADER CARD */
+/* HEADER */
 .header{
-display:flex;flex-wrap:wrap;gap:18px;align-items:center;
-background:rgba(255,255,255,.75);
+display:flex;flex-wrap:wrap;gap:15px;align-items:center;
+background:rgba(255,255,255,.8);
 backdrop-filter:blur(14px);
-padding:18px;border-radius:22px;
+padding:15px;border-radius:22px;
 box-shadow:0 15px 35px rgba(0,0,0,.08)
 }
 .profile{
-width:110px;height:110px;border-radius:50%;
+width:100px;height:100px;border-radius:50%;
 border:4px solid #3b82f6;object-fit:cover
 }
-.title h1{font-size:28px}
-.title span{color:#2563eb;font-weight:600;font-size:14px}
-.title p{color:#555;font-size:13px}
+.title h1{font-size:26px}
+.title span{color:#2563eb;font-weight:600;font-size:13px}
+.title p{color:#555;font-size:12px}
 
 /* GRID */
 .grid{
-display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:15px;margin-top:15px
+display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:12px;margin-top:12px
 }
 
 /* CARD */
 .card{
-background:rgba(255,255,255,.8);
+background:rgba(255,255,255,.85);
 backdrop-filter:blur(14px);
-border-radius:20px;padding:15px;
+border-radius:18px;padding:14px;
 box-shadow:0 12px 30px rgba(0,0,0,.08);
-transition:.35s
+cursor:pointer;transition:.3s
 }
-.card:hover{transform:translateY(-6px) scale(1.01)}
+.card:hover{transform:translateY(-5px)}
 
-/* SKILLS */
-.skill{margin:8px 0;font-size:13px}
-.bar{height:8px;background:#eaf2ff;border-radius:10px;overflow:hidden}
-.fill{height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);width:0;transition:1.2s}
-
-/* PROJECT */
-.project{
-border:1px solid #eaf2ff;border-radius:14px;padding:10px;
-cursor:pointer;font-size:14px;transition:.3s
-}
-.project:hover{background:#f4f9ff}
-
-/* BUTTON */
-.btn{
-display:inline-block;margin-top:10px;padding:10px 18px;border-radius:20px;
-background:#2563eb;color:white;text-decoration:none;font-weight:600;font-size:14px
-}
-.btn:hover{background:#1e40af}
+/* FOOTER */
+.footer{text-align:center;color:#666;margin:15px;font-size:13px}
 
 /* POPUP */
 #popup{
@@ -117,12 +85,14 @@ display:none;align-items:center;justify-content:center;z-index:10
 }
 .popcard{
 background:white;border-radius:20px;padding:20px;
-max-width:380px;width:90%;animation:scale .25s
+max-width:420px;width:90%;animation:scale .25s
 }
 @keyframes scale{from{transform:scale(.85);opacity:0}}
 
-/* FOOTER */
-.footer{text-align:center;color:#666;margin:18px;font-size:13px}
+.btn{
+display:inline-block;margin-top:10px;padding:10px 18px;border-radius:20px;
+background:#2563eb;color:white;text-decoration:none;font-weight:600;font-size:14px
+}
 
 /* MOBILE */
 @media(max-width:600px){
@@ -136,25 +106,15 @@ max-width:380px;width:90%;animation:scale .25s
 <div class="glow g1"></div>
 <div class="glow g2"></div>
 
-<!-- LOADER -->
+<!-- LOADING -->
 <div id="loader">
-<h1>WELCOME TO FX FAM TEAM</h1>
-<div class="spin"></div>
+<h2>WELCOME TO FX FAM TEAM</h2>
+<div id="bar"><span></span></div>
 </div>
-
-<nav>
-<button onclick="show('home')">Home</button>
-<button onclick="show('about')">About</button>
-<button onclick="show('skills')">Skills</button>
-<button onclick="show('projects')">Projects</button>
-<button onclick="show('github')">GitHub</button>
-<button onclick="show('contact')">Contact</button>
-</nav>
 
 <div class="container">
 
-<!-- HOME -->
-<div id="home" class="page active">
+<!-- HEADER -->
 <div class="header">
 <img src="pp.jpg" class="profile">
 <div class="title">
@@ -163,58 +123,39 @@ max-width:380px;width:90%;animation:scale .25s
 <p>Sri Lanka • Age 18+</p>
 </div>
 </div>
-</div>
 
-<!-- ABOUT -->
-<div id="about" class="page">
-<div class="card">
-<h3>👨‍💻 About Me</h3>
-<p style="margin-top:8px;color:#555;font-size:14px">
-I build clean, fast and modern websites and mobile apps with focus on
-performance and user experience.
-</p>
-</div>
-</div>
-
-<!-- SKILLS -->
-<div id="skills" class="page">
-<div class="card">
-<h3>🧠 Skills</h3>
-
-<div class="skill">HTML<div class="bar"><div class="fill" style="--w:90%"></div></div></div>
-<div class="skill">CSS<div class="bar"><div class="fill" style="--w:85%"></div></div></div>
-<div class="skill">JavaScript<div class="bar"><div class="fill" style="--w:80%"></div></div></div>
-<div class="skill">Python<div class="bar"><div class="fill" style="--w:75%"></div></div></div>
-<div class="skill">Flutter<div class="bar"><div class="fill" style="--w:65%"></div></div></div>
-
-</div>
-</div>
-
-<!-- PROJECTS -->
-<div id="projects" class="page">
+<!-- ALL CARDS -->
 <div class="grid">
-<div class="project card" onclick="openPop('Portfolio Website','Modern personal portfolio with animations.')">Portfolio Website</div>
-<div class="project card" onclick="openPop('Chat App','Realtime messaging web application.')">Chat App</div>
-<div class="project card" onclick="openPop('Mobile App UI','Flutter based mobile interface.')">Mobile App UI</div>
-<div class="project card" onclick="openPop('Automation Scripts','Python tools for automation.')">Automation</div>
-</div>
+
+<div class="card" onclick="openPop('About Me',
+'I am a Software Engineer focused on building clean, fast and modern web and mobile applications.')">
+👨‍💻 About Me
 </div>
 
-<!-- GITHUB -->
-<div id="github" class="page">
-<div class="card">
-<h3>📡 Live GitHub Projects</h3>
-<div id="repos" style="margin-top:8px;color:#555;font-size:14px">Loading...</div>
-</div>
+<div class="card" onclick="openPop('Skills',
+'HTML, CSS, JavaScript, Python, Flutter, Git, UI Design')">
+🧠 Skills
 </div>
 
-<!-- CONTACT -->
-<div id="contact" class="page">
-<div class="card">
-<h3>📞 Contact</h3>
-<p style="margin-top:8px;color:#555;font-size:14px">Phone: +94 785 274 495</p>
-<a class="btn" href="https://wa.me/94785274495" target="_blank">WhatsApp Chat</a>
+<div class="card" onclick="openPop('Projects',
+'Portfolio Website, Chat App, Mobile UI, Automation Tools')">
+📂 Projects
 </div>
+
+<div class="card" onclick="openPop('Live GitHub Projects','Loading...','github')">
+📡 GitHub
+</div>
+
+<div class="card" onclick="openPop('Contact',
+'Phone: +94 785 274 495')">
+📞 Contact
+</div>
+
+<div class="card" onclick="openPop('Join FX FAM TEAM',
+'Welcome to FX FAM TEAM — Build, Learn and Grow Together!')">
+⚡ FX FAM TEAM
+</div>
+
 </div>
 
 <div class="footer">© 2026 XHYPER FX — FX FAM TEAM</div>
@@ -225,38 +166,32 @@ performance and user experience.
 <div id="popup" onclick="closePop()">
 <div class="popcard" onclick="event.stopPropagation()">
 <h3 id="ptitle"></h3>
-<p id="ptext" style="margin-top:8px;color:#555;font-size:14px"></p>
+<div id="ptext" style="margin-top:8px;color:#555;font-size:14px"></div>
+<div id="pextra"></div>
 </div>
 </div>
 
 <script>
 /* LOADER */
-setTimeout(()=>loader.style.display="none",1800);
-
-/* NAV */
-function show(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-if(id==="skills"){
-document.querySelectorAll('.fill').forEach(f=>f.style.width=f.style.getPropertyValue('--w'));
-}
-}
-
-/* SKILL START */
-document.querySelectorAll('.fill').forEach(f=>{
-setTimeout(()=>f.style.width=f.style.getPropertyValue('--w'),600);
-});
+setTimeout(()=>loader.style.display="none",2000);
 
 /* POPUP */
-function openPop(t,txt){
+function openPop(t,txt,type){
 popup.style.display="flex";
-ptitle.innerText=t;ptext.innerText=txt;
-}
-function closePop(){popup.style.display="none"}
+ptitle.innerText=t;
+ptext.innerText=txt;
+pextra.innerHTML="";
 
-/* GITHUB LIVE */
+if(type==="github"){ loadGit(); }
+}
+
+function closePop(){ popup.style.display="none"; }
+
+/* GITHUB */
 const GITHUB = "XHYPER-FX"; // CHANGE THIS
 
+function loadGit(){
+ptext.innerText="Loading repositories...";
 fetch(`https://api.github.com/users/${GITHUB}/repos`)
 .then(r=>r.json())
 .then(d=>{
@@ -264,9 +199,10 @@ let html="";
 d.slice(0,6).forEach(r=>{
 html+=`<div>📦 ${r.name}</div>`;
 });
-repos.innerHTML=html || "No repos found";
+ptext.innerHTML=html || "No repos found";
 })
-.catch(()=>repos.innerText="GitHub load error");
+.catch(()=>ptext.innerText="GitHub load error");
+}
 </script>
 
 </body>
