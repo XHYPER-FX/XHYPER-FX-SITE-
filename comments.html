@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FX FAM TEAM | Comments</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
+body{background:#020617;color:#e5e7eb;padding:20px}
+.card{
+background:rgba(255,255,255,.08);backdrop-filter:blur(16px);
+border-radius:20px;padding:14px;margin:10px 0
+}
+h1{text-align:center;color:#60a5fa;margin-bottom:15px}
+</style>
+</head>
+
+<body>
+
+<h1>💬 FX FAM TEAM COMMENTS</h1>
+<div id="list">Loading comments...</div>
+
+<script>
+/* 👉 PUT YOUR RAW JSON LINK HERE */
+const JSON_URL="PUT_YOUR_RAW_GITHUB_JSON_LINK_HERE";
+
+fetch(JSON_URL).then(r=>r.json()).then(d=>{
+let h="";
+d.forEach(c=>{
+h+=`<div class="card"><b>${c.name}</b><br>${c.msg}</div>`;
+});
+list.innerHTML=h || "No comments";
+}).catch(()=>list.innerText="Failed to load comments");
+</script>
+
+</body>
+</html>
