@@ -3,41 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FX FAM TEAM | Comments</title>
+<title>XHYPER FX | FX FAM TEAM</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
-body{background:#020617;color:#e5e7eb;padding:20px;min-height:100vh}
+body{background:radial-gradient(circle at top,#0b1220,#020617);color:#e5e7eb;overflow-x:hidden}
+canvas{position:fixed;inset:0;z-index:-2}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:#020617;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999}
+#bar{width:240px;height:10px;background:#111827;border-radius:10px;overflow:hidden}
+#bar span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#3b82f6,#22d3ee);animation:load 2s forwards}
+@keyframes load{to{width:100%}}
+#loader h2{color:#60a5fa;margin-bottom:14px}
+
+/* LAYOUT */
+.container{max-width:1200px;margin:auto;padding:14px}
+
+/* GLASS CARD */
 .card{
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(16px);
-border-radius:20px;padding:14px;margin:10px 0
+background:rgba(255,255,255,.06);backdrop-filter:blur(18px);
+border-radius:26px;padding:20px;margin-top:12px;
+box-shadow:0 0 0 1px rgba(255,255,255,.08),0 25px 60px rgba(0,0,0,.5)
 }
-h1{text-align:center;color:#60a5fa;margin-bottom:15px}
-.back{
-display:inline-block;margin-bottom:12px;
-color:#60a5fa;text-decoration:none;font-weight:600
-}
+
+.btn{padding:10px 18px;border:none;border-radius:20px;background:#3b82f6;color:white;cursor:pointer;margin-top:8px}
+input,textarea{width:100%;padding:10px;border-radius:10px;border:none;margin-top:8px;background:#020617;color:white}
+.comment{background:rgba(255,255,255,.05);padding:10px;border-radius:12px;margin:8px 0}
+.admin{color:#22d3ee;font-size:12px}
 </style>
 </head>
 
 <body>
 
-<div class="card">
-<a class="back" href="index.html">← Back to Home</a>
-<h1>💬 FX FAM TEAM COMMENTS</h1>
+<canvas id="bg"></canvas>
 
-<script src="https://utteranc.es/client.js"
-        repo="XHYPER-FX/fx-comments"
-        issue-term="pathname"
-        theme="github-dark"
-        crossorigin="anonymous"
-        async>
-</script>
+<div id="loader">
+<h2>WELCOME TO FX FAM TEAM</h2>
+<div id="bar"><span></span></div>
+</div>
+
+<div class="container">
+
+<!-- ADMIN LOGIN -->
+<div class="card" id="loginBox">
+<h3>👑 Admin Login</h3>
+<input id="email" placeholder="Admin Email">
+<input id="pass" type="password" placeholder="Password">
+<button class="btn" onclick="login()">Login</button>
+<p id="status"></p>
+</div>
+
+<!-- COMMENTS -->
+<div class="card">
+<h3>💬 Comments</h3>
+
+<input id="name" placeholder="Your name">
+<textarea id="msg" placeholder="Your comment"></textarea>
+<button class="btn" onclick="send()">Send Comment</button>
+
+<div id="list"></div>
+</div>
 
 </div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/* ✅ YOUR FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyA8lIFpFIkNNDlp26tGD1qG97KNy4V-Dww",
+  authDomain: "fxfam-comments.firebaseapp.com",
+  projectId: "fxfam-comments",
+  storageBucket: "fxfam-comments.firebasestorage.app",
+  messagingSenderId: "444278711668",
+  appId: "1:444278711668:web:9f2dd8105412c4afc6f821"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let isAdmin=false;
+
+/* ADMIN LOGIN */
+window.login=()=>{
+signInWithEmailAndPassword(auth,email.value,pass.value)
+.then(()=>status.innerText="Admin logged in")
+.catch(e=>status.innerText=e.message);
+};
+
+/* CHECK ADMIN */
+onAuthStateChanged(auth,u=>{
+isAdmin=!!u;
+if(isAdmin) loginBox.style.display="none";
+});
+
+/* SEND COMMENT */
+window.send=async()=>{
+if(!name.value||!msg.value) return alert("Fill all");
+await addDoc(collection(db,"comments"),{
+name:name.value,msg:msg.value,likes:0,time:serverTimestamp()
+});
+msg.value="";
+};
+
+/* LOAD COMMENTS */
+const q=query(collection(db,"comments"),orderBy("time","desc"));
+onSnapshot(q,(snap)=>{
+let h="";
+snap.forEach(d=>{
+const c=d.data();
+h+=`
+<div class="comment">
+<b>${c.name}</b> <span class="admin">${isAdmin?"ADMIN":""}</span><br>
+${c.msg}<br>
+❤️ ${c.likes||0}
+${isAdmin?`
+<br>
+<button onclick="like('${d.id}',${c.likes||0})">+ Like</button>
+<button onclick="edit('${d.id}','${c.msg.replace(/'/g,"\\'")}')">Edit</button>
+<button onclick="del('${d.id}')">Delete</button>
+`:""}
+</div>`;
+});
+list.innerHTML=h;
+});
+
+/* ADMIN ACTIONS */
+window.del=async(id)=>{
+if(confirm("Delete comment?")) await deleteDoc(doc(db,"comments",id));
+};
+window.like=async(id,l)=>{
+await updateDoc(doc(db,"comments",id),{likes:l+1});
+};
+window.edit=async(id,old)=>{
+const n=prompt("Edit comment",old);
+if(n) await updateDoc(doc(db,"comments",id),{msg:n});
+};
+</script>
+
+<script>
+setTimeout(()=>loader.style.display="none",2000);
+
+/* BACKGROUND */
+const canvas=document.getElementById("bg"),c=canvas.getContext("2d");
+resize();window.onresize=resize;
+let p=[];for(let i=0;i<90;i++)p.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+1,dx:(Math.random()-.5),dy:(Math.random()-.5)});
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+function anim(){
+c.clearRect(0,0,canvas.width,canvas.height);
+c.fillStyle="#3b82f6";
+p.forEach(o=>{
+o.x+=o.dx;o.y+=o.dy;
+if(o.x<0||o.x>canvas.width)o.dx*=-1;
+if(o.y<0||o.y>canvas.height)o.dy*=-1;
+c.beginPath();c.arc(o.x,o.y,o.r,0,Math.PI*2);c.fill();
+});
+requestAnimationFrame(anim);
+}
+anim();
+</script>
 
 </body>
 </html>
