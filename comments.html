@@ -9,35 +9,27 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
-body{background:radial-gradient(circle at top,#0b1220,#020617);color:#e5e7eb;min-height:100vh}
+body{background:#020617;color:#e5e7eb;min-height:100vh}
 canvas{position:fixed;inset:0;z-index:-1}
 
 .container{max-width:900px;margin:auto;padding:20px}
-
 .card{
-background:rgba(255,255,255,.06);backdrop-filter:blur(16px);
+background:rgba(255,255,255,.07);backdrop-filter:blur(14px);
 border-radius:22px;padding:18px;margin-bottom:15px;
 box-shadow:0 0 0 1px rgba(255,255,255,.08),0 25px 60px rgba(0,0,0,.6)
 }
-
 h2{color:#60a5fa;margin-bottom:10px}
 input,textarea{
 width:100%;padding:10px;border-radius:10px;border:none;
 background:#020617;color:white;margin-top:8px
 }
-
 .btn{
 margin-top:10px;padding:10px 18px;border:none;border-radius:20px;
 background:#3b82f6;color:white;cursor:pointer
 }
-
-.comment{
-background:rgba(255,255,255,.05);padding:10px;border-radius:12px;margin:8px 0
-}
+.comment{background:rgba(255,255,255,.05);padding:10px;border-radius:12px;margin:8px 0}
 .admin{color:#22d3ee;font-size:12px}
-.actions button{
-background:none;border:none;color:#60a5fa;cursor:pointer;margin-right:10px
-}
+.actions button{background:none;border:none;color:#60a5fa;cursor:pointer;margin-right:10px}
 </style>
 </head>
 
@@ -69,7 +61,7 @@ background:none;border:none;color:#60a5fa;cursor:pointer;margin-right:10px
 
 </div>
 
-<!-- FIREBASE -->
+<!-- 🔥 FIREBASE CODE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } 
@@ -87,50 +79,70 @@ const firebaseConfig = {
   appId: "1:444278711668:web:9f2dd8105412c4afc6f821"
 };
 
+console.log("🔥 Firebase starting...");
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-let isAdmin = false;
+let isAdmin=false;
 
-/* ADMIN LOGIN */
-window.login = () => {
-  if(!email.value || !pass.value){
-    status.innerText = "Enter email and password";
-    return;
+/* ================= ADMIN LOGIN ================= */
+window.login = async ()=>{
+  try{
+    if(!email.value || !pass.value){
+      status.innerText="Enter email & password";
+      return;
+    }
+
+    await signInWithEmailAndPassword(auth,email.value,pass.value);
+    status.innerText="Admin logged in ✅";
+    console.log("ADMIN LOGIN SUCCESS");
+
+  }catch(e){
+    console.error("LOGIN ERROR:",e);
+    status.innerText=e.message;
   }
-
-  signInWithEmailAndPassword(auth, email.value, pass.value)
-    .then(()=> status.innerText="Admin logged in")
-    .catch(e=> status.innerText=e.message);
 };
 
-/* CHECK ADMIN */
-onAuthStateChanged(auth, user=>{
-  isAdmin = !!user;
-  if(isAdmin) loginBox.style.display="none";
+onAuthStateChanged(auth,u=>{
+  isAdmin=!!u;
+  if(isAdmin){
+    loginBox.style.display="none";
+    console.log("ADMIN MODE ACTIVE");
+  }
 });
 
-/* SEND COMMENT */
-window.send = async () => {
-  if(name.value.trim()==="" || msg.value.trim()===""){
-    alert("Fill all");
-    return;
+/* ================= SEND COMMENT ================= */
+window.send = async ()=>{
+  try{
+    if(name.value.trim()==="" || msg.value.trim()===""){
+      alert("Fill all");
+      return;
+    }
+
+    console.log("Sending comment...");
+
+    await addDoc(collection(db,"comments"),{
+      name:name.value,
+      msg:msg.value,
+      likes:0,
+      time:serverTimestamp()
+    });
+
+    console.log("Comment sent");
+    msg.value="";
+    alert("Message sent ✅");
+
+  }catch(e){
+    console.error("SEND ERROR:",e);
+    alert("ERROR: "+e.message);
   }
-
-  await addDoc(collection(db,"comments"),{
-    name:name.value,
-    msg:msg.value,
-    likes:0,
-    time:serverTimestamp()
-  });
-
-  msg.value="";
 };
 
-/* LOAD COMMENTS */
-const q = query(collection(db,"comments"), orderBy("time","desc"));
-onSnapshot(q, snap=>{
+/* ================= LOAD COMMENTS ================= */
+try{
+const q=query(collection(db,"comments"),orderBy("time","desc"));
+onSnapshot(q,(snap)=>{
   let html="";
   snap.forEach(d=>{
     const c=d.data();
@@ -138,7 +150,7 @@ onSnapshot(q, snap=>{
     <div class="comment">
       <b>${c.name}</b> ${isAdmin?'<span class="admin">ADMIN</span>':''}<br>
       ${c.msg}<br>
-      ❤️ ${c.likes || 0}
+      ❤️ ${c.likes||0}
       ${isAdmin?`
       <div class="actions">
         <button onclick="like('${d.id}',${c.likes||0})">+Like</button>
@@ -149,25 +161,33 @@ onSnapshot(q, snap=>{
   });
   list.innerHTML=html;
 });
+}catch(e){
+  console.error("LOAD ERROR:",e);
+}
 
-/* ADMIN ACTIONS */
-window.del = async (id)=>{
-  if(confirm("Delete comment?")){
-    await deleteDoc(doc(db,"comments",id));
-  }
+/* ================= ADMIN ACTIONS ================= */
+window.del=async(id)=>{
+  try{
+    if(confirm("Delete comment?")){
+      await deleteDoc(doc(db,"comments",id));
+    }
+  }catch(e){ alert(e.message); }
 };
 
-window.like = async (id,l)=>{
-  await updateDoc(doc(db,"comments",id),{likes:l+1});
+window.like=async(id,l)=>{
+  try{ await updateDoc(doc(db,"comments",id),{likes:l+1}); }
+  catch(e){ alert(e.message); }
 };
 
-window.edit = async (id,old)=>{
-  const n = prompt("Edit comment", old);
-  if(n) await updateDoc(doc(db,"comments",id),{msg:n});
+window.edit=async(id,old)=>{
+  try{
+    const n=prompt("Edit comment",old);
+    if(n) await updateDoc(doc(db,"comments",id),{msg:n});
+  }catch(e){ alert(e.message); }
 };
 </script>
 
-<!-- BACKGROUND -->
+<!-- 🌌 BACKGROUND -->
 <script>
 const canvas=document.getElementById("bg"),c=canvas.getContext("2d");
 resize();window.onresize=resize;
