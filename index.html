@@ -9,90 +9,103 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
-body{background:#f5faff;color:#0a2540;overflow-x:hidden}
+body{
+background:radial-gradient(circle at top,#0b1220,#020617);
+color:#e5e7eb;
+overflow-x:hidden;
+}
 
 /* LIVE BACKGROUND */
 canvas{position:fixed;inset:0;z-index:-2}
 
-/* BLUR NEON */
+/* NEON GLOW */
 .glow{
-position:fixed;width:350px;height:350px;border-radius:50%;
-filter:blur(130px);opacity:.7;z-index:-1
+position:fixed;width:380px;height:380px;border-radius:50%;
+filter:blur(140px);opacity:.35;z-index:-1
 }
-.g1{background:#3b82f6;top:-120px;left:-120px}
-.g2{background:#60a5fa;bottom:-120px;right:-120px}
+.g1{background:#3b82f6;top:-140px;left:-140px}
+.g2{background:#22d3ee;bottom:-140px;right:-140px}
 
 /* LOADER */
 #loader{
-position:fixed;inset:0;background:#f5faff;
+position:fixed;inset:0;background:#020617;
 display:flex;flex-direction:column;align-items:center;justify-content:center;
 z-index:9999
 }
-#bar{width:240px;height:10px;background:#eaf2ff;border-radius:10px;overflow:hidden}
+#bar{width:240px;height:10px;background:#111827;border-radius:10px;overflow:hidden}
 #bar span{
 display:block;height:100%;width:0%;
-background:linear-gradient(90deg,#2563eb,#60a5fa);
+background:linear-gradient(90deg,#3b82f6,#22d3ee);
 animation:load 2s forwards
 }
 @keyframes load{to{width:100%}}
-#loader h2{color:#2563eb;margin-bottom:12px}
+#loader h2{color:#60a5fa;margin-bottom:14px}
 
 /* LAYOUT */
-.container{max-width:1200px;margin:auto;padding:12px}
+.container{max-width:1300px;margin:auto;padding:14px}
 
 /* HEADER */
 .header{
-display:flex;flex-wrap:wrap;gap:15px;align-items:center;
-background:rgba(255,255,255,.85);
-backdrop-filter:blur(14px);
-padding:18px;border-radius:25px;
-box-shadow:0 15px 35px rgba(0,0,0,.08)
+display:flex;flex-wrap:wrap;gap:14px;align-items:center;
+background:rgba(255,255,255,.06);
+backdrop-filter:blur(16px);
+padding:18px;border-radius:26px;
+box-shadow:0 0 0 1px rgba(255,255,255,.08),0 20px 40px rgba(0,0,0,.4)
 }
 .profile{
 width:110px;height:110px;border-radius:50%;
-border:4px solid #3b82f6;object-fit:cover
+border:3px solid #3b82f6;object-fit:cover
 }
 .title h1{font-size:28px}
-.title span{color:#2563eb;font-weight:600;font-size:14px}
-.title p{color:#555;font-size:13px}
+.title span{color:#60a5fa;font-weight:600;font-size:14px}
+.title p{color:#9ca3af;font-size:12px}
 
 /* BIG CARDS GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:14px;margin-top:12px
+gap:14px;margin-top:14px
 }
 
-/* BIG CARD */
+/* GLASS CARD */
 .card{
-background:rgba(255,255,255,.88);
-backdrop-filter:blur(14px);
-border-radius:24px;padding:22px;
-box-shadow:0 14px 35px rgba(0,0,0,.1);
+background:rgba(255,255,255,.06);
+backdrop-filter:blur(18px);
+border-radius:26px;padding:26px;
+box-shadow:0 0 0 1px rgba(255,255,255,.08),0 25px 60px rgba(0,0,0,.5);
 cursor:pointer;transition:.35s;
-min-height:140px;
+min-height:160px;
 display:flex;align-items:center;justify-content:center;
-font-size:18px;font-weight:600
+font-size:18px;font-weight:600;
+color:#e5e7eb;
 }
-.card:hover{transform:translateY(-8px) scale(1.02)}
+.card:hover{
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 0 0 1px rgba(59,130,246,.6),0 35px 80px rgba(0,0,0,.8)
+}
 
 /* FOOTER */
-.footer{text-align:center;color:#666;margin:12px;font-size:13px}
+.footer{text-align:center;color:#9ca3af;margin:14px;font-size:13px}
 
 /* POPUP */
 #popup{
-position:fixed;inset:0;background:rgba(0,0,0,.45);
+position:fixed;inset:0;background:rgba(2,6,23,.75);
 display:none;align-items:center;justify-content:center;z-index:10
 }
 .popcard{
-background:white;border-radius:25px;padding:22px;
-max-width:450px;width:90%;animation:scale .25s
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(20px);
+border-radius:26px;padding:24px;
+max-width:480px;width:90%;
+box-shadow:0 0 0 1px rgba(255,255,255,.1),0 40px 80px rgba(0,0,0,.9);
+animation:scale .25s
 }
 @keyframes scale{from{transform:scale(.85);opacity:0}}
 
 .btn{
-display:inline-block;margin-top:12px;padding:12px 20px;border-radius:25px;
-background:#2563eb;color:white;text-decoration:none;font-weight:600;font-size:15px
+display:inline-block;margin-top:14px;padding:12px 22px;border-radius:30px;
+background:linear-gradient(90deg,#3b82f6,#22d3ee);
+color:white;text-decoration:none;font-weight:600;font-size:15px
 }
 
 /* MOBILE */
@@ -127,21 +140,21 @@ background:#2563eb;color:white;text-decoration:none;font-weight:600;font-size:15
 </div>
 </div>
 
-<!-- BIG CARDS -->
+<!-- BIG GLASS CARDS -->
 <div class="grid">
 
 <div class="card" onclick="openPop('About Me',
-'I am a Software Engineer focused on building clean, fast and modern web and mobile applications.')">
+'I am a Software Engineer focused on building clean, fast and modern web and mobile applications with strong UI/UX.')">
 👨‍💻 ABOUT ME
 </div>
 
 <div class="card" onclick="openPop('Skills',
-'HTML • CSS • JavaScript • Python • Flutter • Git • UI Design')">
+'HTML • CSS • JavaScript • Python • Flutter • Git • API Integration • UI Design')">
 🧠 SKILLS
 </div>
 
 <div class="card" onclick="openPop('Projects',
-'Portfolio Website, Chat App, Mobile UI, Automation Tools')">
+'Portfolio Website • Chat App • Mobile UI • Automation Tools • Web Dashboards')">
 📂 PROJECTS
 </div>
 
@@ -155,7 +168,7 @@ background:#2563eb;color:white;text-decoration:none;font-weight:600;font-size:15
 </div>
 
 <div class="card" onclick="openPop('FX FAM TEAM',
-'Welcome to FX FAM TEAM — Build, Learn and Grow Together!')">
+'Welcome to FX FAM TEAM — Code Together • Learn Together • Grow Together')">
 ⚡ FX FAM TEAM
 </div>
 
@@ -169,7 +182,7 @@ background:#2563eb;color:white;text-decoration:none;font-weight:600;font-size:15
 <div id="popup" onclick="closePop()">
 <div class="popcard" onclick="event.stopPropagation()">
 <h3 id="ptitle"></h3>
-<div id="ptext" style="margin-top:10px;color:#555;font-size:15px"></div>
+<div id="ptext" style="margin-top:12px;color:#d1d5db;font-size:15px"></div>
 <div id="pextra"></div>
 </div>
 </div>
@@ -188,21 +201,21 @@ if(type==="github"){ loadGit(); }
 }
 function closePop(){ popup.style.display="none"; }
 
-/* LIVE BACKGROUND PARTICLES */
+/* LIVE PARTICLE BACKGROUND */
 const canvas=document.getElementById("bg");
 const c=canvas.getContext("2d");
 resize();window.onresize=resize;
 
 let p=[];
-for(let i=0;i<90;i++){
+for(let i=0;i<100;i++){
 p.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,
-r:Math.random()*2+1,dx:(Math.random()-.5),dy:(Math.random()-.5)});
+r:Math.random()*2+1,dx:(Math.random()-.5)*0.6,dy:(Math.random()-.5)*0.6});
 }
 function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
 
 function anim(){
 c.clearRect(0,0,canvas.width,canvas.height);
-c.fillStyle="#3b82f6";
+c.fillStyle="rgba(59,130,246,.8)";
 p.forEach(o=>{
 o.x+=o.dx;o.y+=o.dy;
 if(o.x<0||o.x>canvas.width)o.dx*=-1;
@@ -213,7 +226,7 @@ requestAnimationFrame(anim);
 }
 anim();
 
-/* GITHUB */
+/* GITHUB LIVE */
 const GITHUB = "XHYPER-FX"; // CHANGE THIS
 
 function loadGit(){
