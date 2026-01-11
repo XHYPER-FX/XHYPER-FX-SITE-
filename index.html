@@ -9,29 +9,26 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
-body{
-background:#f7fbff;
-color:#0a2540;
-overflow-x:hidden;
-}
+body{background:#f5faff;color:#0a2540;overflow-x:hidden}
+
+/* LIVE BACKGROUND */
+canvas{position:fixed;inset:0;z-index:-2}
 
 /* BLUR NEON */
 .glow{
-position:fixed;width:320px;height:320px;border-radius:50%;
-filter:blur(120px);opacity:.7;z-index:-1
+position:fixed;width:350px;height:350px;border-radius:50%;
+filter:blur(130px);opacity:.7;z-index:-1
 }
-.g1{background:#3b82f6;top:-100px;left:-100px}
-.g2{background:#60a5fa;bottom:-100px;right:-100px}
+.g1{background:#3b82f6;top:-120px;left:-120px}
+.g2{background:#60a5fa;bottom:-120px;right:-120px}
 
 /* LOADER */
 #loader{
-position:fixed;inset:0;background:#f7fbff;
+position:fixed;inset:0;background:#f5faff;
 display:flex;flex-direction:column;align-items:center;justify-content:center;
 z-index:9999
 }
-#bar{
-width:220px;height:8px;background:#eaf2ff;border-radius:10px;overflow:hidden
-}
+#bar{width:240px;height:10px;background:#eaf2ff;border-radius:10px;overflow:hidden}
 #bar span{
 display:block;height:100%;width:0%;
 background:linear-gradient(90deg,#2563eb,#60a5fa);
@@ -41,42 +38,46 @@ animation:load 2s forwards
 #loader h2{color:#2563eb;margin-bottom:12px}
 
 /* LAYOUT */
-.container{max-width:1100px;margin:auto;padding:15px}
+.container{max-width:1200px;margin:auto;padding:12px}
 
 /* HEADER */
 .header{
 display:flex;flex-wrap:wrap;gap:15px;align-items:center;
-background:rgba(255,255,255,.8);
+background:rgba(255,255,255,.85);
 backdrop-filter:blur(14px);
-padding:15px;border-radius:22px;
+padding:18px;border-radius:25px;
 box-shadow:0 15px 35px rgba(0,0,0,.08)
 }
 .profile{
-width:100px;height:100px;border-radius:50%;
+width:110px;height:110px;border-radius:50%;
 border:4px solid #3b82f6;object-fit:cover
 }
-.title h1{font-size:26px}
-.title span{color:#2563eb;font-weight:600;font-size:13px}
-.title p{color:#555;font-size:12px}
+.title h1{font-size:28px}
+.title span{color:#2563eb;font-weight:600;font-size:14px}
+.title p{color:#555;font-size:13px}
 
-/* GRID */
+/* BIG CARDS GRID */
 .grid{
-display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:12px;margin-top:12px
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:14px;margin-top:12px
 }
 
-/* CARD */
+/* BIG CARD */
 .card{
-background:rgba(255,255,255,.85);
+background:rgba(255,255,255,.88);
 backdrop-filter:blur(14px);
-border-radius:18px;padding:14px;
-box-shadow:0 12px 30px rgba(0,0,0,.08);
-cursor:pointer;transition:.3s
+border-radius:24px;padding:22px;
+box-shadow:0 14px 35px rgba(0,0,0,.1);
+cursor:pointer;transition:.35s;
+min-height:140px;
+display:flex;align-items:center;justify-content:center;
+font-size:18px;font-weight:600
 }
-.card:hover{transform:translateY(-5px)}
+.card:hover{transform:translateY(-8px) scale(1.02)}
 
 /* FOOTER */
-.footer{text-align:center;color:#666;margin:15px;font-size:13px}
+.footer{text-align:center;color:#666;margin:12px;font-size:13px}
 
 /* POPUP */
 #popup{
@@ -84,14 +85,14 @@ position:fixed;inset:0;background:rgba(0,0,0,.45);
 display:none;align-items:center;justify-content:center;z-index:10
 }
 .popcard{
-background:white;border-radius:20px;padding:20px;
-max-width:420px;width:90%;animation:scale .25s
+background:white;border-radius:25px;padding:22px;
+max-width:450px;width:90%;animation:scale .25s
 }
 @keyframes scale{from{transform:scale(.85);opacity:0}}
 
 .btn{
-display:inline-block;margin-top:10px;padding:10px 18px;border-radius:20px;
-background:#2563eb;color:white;text-decoration:none;font-weight:600;font-size:14px
+display:inline-block;margin-top:12px;padding:12px 20px;border-radius:25px;
+background:#2563eb;color:white;text-decoration:none;font-weight:600;font-size:15px
 }
 
 /* MOBILE */
@@ -102,6 +103,8 @@ background:#2563eb;color:white;text-decoration:none;font-weight:600;font-size:14
 </head>
 
 <body>
+
+<canvas id="bg"></canvas>
 
 <div class="glow g1"></div>
 <div class="glow g2"></div>
@@ -124,34 +127,34 @@ background:#2563eb;color:white;text-decoration:none;font-weight:600;font-size:14
 </div>
 </div>
 
-<!-- ALL CARDS -->
+<!-- BIG CARDS -->
 <div class="grid">
 
 <div class="card" onclick="openPop('About Me',
 'I am a Software Engineer focused on building clean, fast and modern web and mobile applications.')">
-👨‍💻 About Me
+👨‍💻 ABOUT ME
 </div>
 
 <div class="card" onclick="openPop('Skills',
-'HTML, CSS, JavaScript, Python, Flutter, Git, UI Design')">
-🧠 Skills
+'HTML • CSS • JavaScript • Python • Flutter • Git • UI Design')">
+🧠 SKILLS
 </div>
 
 <div class="card" onclick="openPop('Projects',
 'Portfolio Website, Chat App, Mobile UI, Automation Tools')">
-📂 Projects
+📂 PROJECTS
 </div>
 
-<div class="card" onclick="openPop('Live GitHub Projects','Loading...','github')">
-📡 GitHub
+<div class="card" onclick="openPop('GitHub Projects','Loading...','github')">
+📡 GITHUB
 </div>
 
 <div class="card" onclick="openPop('Contact',
 'Phone: +94 785 274 495')">
-📞 Contact
+📞 CONTACT
 </div>
 
-<div class="card" onclick="openPop('Join FX FAM TEAM',
+<div class="card" onclick="openPop('FX FAM TEAM',
 'Welcome to FX FAM TEAM — Build, Learn and Grow Together!')">
 ⚡ FX FAM TEAM
 </div>
@@ -166,7 +169,7 @@ background:#2563eb;color:white;text-decoration:none;font-weight:600;font-size:14
 <div id="popup" onclick="closePop()">
 <div class="popcard" onclick="event.stopPropagation()">
 <h3 id="ptitle"></h3>
-<div id="ptext" style="margin-top:8px;color:#555;font-size:14px"></div>
+<div id="ptext" style="margin-top:10px;color:#555;font-size:15px"></div>
 <div id="pextra"></div>
 </div>
 </div>
@@ -181,11 +184,34 @@ popup.style.display="flex";
 ptitle.innerText=t;
 ptext.innerText=txt;
 pextra.innerHTML="";
-
 if(type==="github"){ loadGit(); }
 }
-
 function closePop(){ popup.style.display="none"; }
+
+/* LIVE BACKGROUND PARTICLES */
+const canvas=document.getElementById("bg");
+const c=canvas.getContext("2d");
+resize();window.onresize=resize;
+
+let p=[];
+for(let i=0;i<90;i++){
+p.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,
+r:Math.random()*2+1,dx:(Math.random()-.5),dy:(Math.random()-.5)});
+}
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+
+function anim(){
+c.clearRect(0,0,canvas.width,canvas.height);
+c.fillStyle="#3b82f6";
+p.forEach(o=>{
+o.x+=o.dx;o.y+=o.dy;
+if(o.x<0||o.x>canvas.width)o.dx*=-1;
+if(o.y<0||o.y>canvas.height)o.dy*=-1;
+c.beginPath();c.arc(o.x,o.y,o.r,0,Math.PI*2);c.fill();
+});
+requestAnimationFrame(anim);
+}
+anim();
 
 /* GITHUB */
 const GITHUB = "XHYPER-FX"; // CHANGE THIS
